@@ -2,10 +2,6 @@ FROM ubuntu:18.04
 
 LABEL maintainer="Tomohisa Kusano <siomiz@gmail.com>"
 
-ENV VNC_SCREEN_SIZE 1024x768
-
-COPY copyables /
-
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 	gnupg2 \
@@ -43,7 +39,16 @@ RUN apt-get clean \
 	' >> /home/chrome/.fluxbox/init \
 	&& chown -R chrome:chrome /home/chrome/.config /home/chrome/.fluxbox
 
-VOLUME ["/home/chrome"]
+#RUN wget -c https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O /usr/local/go.tar.gz \
+#    && tar -xzvf /usr/local/go.tar.gz \
+#    && mv /go /usr/local/go \
+#    && rm /usr/local/go.tar.gz
+#
+
+RUN wget https://github.com/kahing/goofys/releases/latest/download/goofys -O /goofys
+
+ENV VNC_SCREEN_SIZE 1280x868
+COPY copyables /
 
 EXPOSE 5900
 

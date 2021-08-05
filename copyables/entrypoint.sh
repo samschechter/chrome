@@ -27,11 +27,14 @@ mkdir -p /home/chrome/.config
 chown chrome:chrome /home/chrome/.config
 
 # set sizes for both VNC screen & Chrome window
-: ${VNC_SCREEN_SIZE:='1024x768'}
+: ${VNC_SCREEN_SIZE:='1280x868'}
 IFS='x' read SCREEN_WIDTH SCREEN_HEIGHT <<< "${VNC_SCREEN_SIZE}"
 export VNC_SCREEN="${SCREEN_WIDTH}x${SCREEN_HEIGHT}x24"
 export CHROME_WINDOW_SIZE="${SCREEN_WIDTH},${SCREEN_HEIGHT}"
 
-export CHROME_OPTS="${CHROME_OPTS_OVERRIDE:- --user-data-dir --no-sandbox --window-position=0,0 --force-device-scale-factor=1 --disable-dev-shm-usage}"
+export CHROME_OPTS="${CHROME_OPTS_OVERRIDE:- --user-data-dir --kiosk --window-position=0,0 --force-device-scale-factor=1 --disable-dev-shm-usage --no-default-browser-check --no-first-run --incognito ${ENTRYPOINT_URL}}"
+
+chmod 700 /mount_s3.sh
+/mount_s3.sh
 
 exec "$@"
